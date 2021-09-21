@@ -78,10 +78,16 @@ main_control_corriente.obj: C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/inclu
 main_control_corriente.obj: C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/SPLL_3PH_SRF_IQ.h
 main_control_corriente.obj: C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/SPLL_3PH_DDSRF_IQ.h
 main_control_corriente.obj: C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/NOTCH_FLTR_IQ.h
-main_control_corriente.obj: ../Headers.h
-main_control_corriente.obj: C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/string.h
+main_control_corriente.obj: ../Mediciones.h
 main_control_corriente.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_Device.h
-main_control_corriente.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_DefaultISR.h
+main_control_corriente.obj: ../TripZoneEnable.h
+main_control_corriente.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP28x_Project.h
+main_control_corriente.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_Examples.h
+main_control_corriente.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_GlobalPrototypes.h
+main_control_corriente.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_EPwm_defines.h
+main_control_corriente.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_Dma_defines.h
+main_control_corriente.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_I2c_defines.h
+main_control_corriente.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_DefaultIsr.h
 
 ../main_control_corriente.c: 
 C:/ti/controlSUITE/development_kits/~SupportFiles/F2833x_headers/PeripheralHeaderIncludes.h: 
@@ -161,7 +167,13 @@ C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/SPLL_1ph_SOGI_IQ.h:
 C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/SPLL_3PH_SRF_IQ.h: 
 C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/SPLL_3PH_DDSRF_IQ.h: 
 C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/NOTCH_FLTR_IQ.h: 
-../Headers.h: 
-C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/string.h: 
+../Mediciones.h: 
 C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_Device.h: 
-C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_DefaultISR.h: 
+../TripZoneEnable.h: 
+C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP28x_Project.h: 
+C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_Examples.h: 
+C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_GlobalPrototypes.h: 
+C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_EPwm_defines.h: 
+C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_Dma_defines.h: 
+C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_I2c_defines.h: 
+C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_DefaultIsr.h: 

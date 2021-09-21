@@ -1,5 +1,5 @@
 //###########################################################################
-// Description:
+// Description: verion actual en uso
 
 //
 //###########################################################################
@@ -19,12 +19,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Solar_IQ.h"
-#include "Headers.h"
 
+#include "Mediciones.h"
+#include "TripZoneEnable.h"
+#include "DSP28x_Project.h"
 
 #define T 0.0001			//Periodo PWM e interrupcion (10Khz)
 #define BASE_FREQ 200		//Frecuencia de base para SVGEN (maxima frecuencia para freq=1)
-#define frec50Hz 0.25		//Constante para obtener 50Hz (BASE_FREQ*freq50hz)
+#define frec50Hz 0.04		//Constante para obtener 50Hz (BASE_FREQ*freq50hz)
 #define V_CONSTANTE 12.1 //Constante para obtener la relacion cantidad de cuentas por voltio (cuentas/V=12.1)
 #define BASE_VOLT_CONTINUA 339.2 // voltaje maximo a medir, en por unidad seria 1
 #define BASE_CURRENT_CONT 30.3
@@ -40,6 +42,8 @@
 // Prototype statements for functions found within this file.
 void delay_loop(void);
 interrupt void MainISR(void);
+__interrupt void epwm1_tzint_isr(void);
+Uint32  EPwm1TZIntCount; // sacar luego de funcione la interrupcion
 void DeviceInit();
 void TZ_Protection(void);
 void TZ_Clear(void);
@@ -55,7 +59,7 @@ float32 Ieff_carga=0, Ieff_grid=0;
 float32 Imax=5;
 float32 buffer_VinvU[200], buffer_VinvV[200], buffer_VinvW[200], buffer_VgridW[200], buffer_VgridV[200], buffer_VgridU[200];
 float32 buffer_theta[200], buffer_rampa[200];
-Uint16 EnableFlag = 0;
+Uint16 AcknowledgeTZ = 0;
 
 //float32 bufferU[200], bufferV[200], bufferW[200];
 //float32 buffer_VinvU[200]; buffer_VinvV[200], buffer_SP[200], buffer_Out[200], buffer_error[200], buffer_VgridV1[200];
@@ -109,7 +113,6 @@ _iq V_Q;	// V_Q a la salida del lazo
 _iq ARRANQUE_CON_RED=0;	// variable para arrancar desde la programacion
 
 
-
 //Declaración de instancias de las macros
 PWMGEN pwm1 = PWMGEN_DEFAULTS;			//PWM
 IPARK ipark_SP_tension = IPARK_DEFAULTS;			//Transformacion de park inversa
@@ -142,14 +145,19 @@ void main(void){
     //INICIALIZACIONES
     //***************************************************************************
 
-	DINT;			//Desactiva interrupciones antes de la inicializacion
+
+
+    DINT;			//Desactiva interrupciones antes de la inicializacion
 	DeviceInit(); 	//Inicializacion PLL, WatchDog, enable Peripheral Clocks
 
 	//Inicializacion del modulo PWM
 	//Calculo del periodo del PWM a partir de la frecuencia del micro (en cantidad de ciclos de clock que entran en un semiperiodo)
 	pwm1.PeriodMax = SYSTEM_FREQUENCY*(Uint16)(1000000*T)/2;  // Prescaler X1 (T1), ISR period = T x 1
 	PWM_INIT_MACRO(pwm1)
-
+	TripZoneEnable();
+	EALLOW;  // This is needed to write to EALLOW protected registers
+	   PieVectTable.EPWM1_TZINT = &epwm1_tzint_isr;
+	EDIS;
 	//Inicializacion del módulo ADC
 	ADC_MACRO_INIT()
 
@@ -167,6 +175,10 @@ void main(void){
 	rc_vd_arranque.RampDelayMax=1;
 	rc_vd_arranque.TargetValue=ARRANQUE_CON_RED;
 	
+	IER |= M_INT2;
+	PieCtrlRegs.PIEIER2.bit.INTx1 = 1;
+	EINT;   // Enable Global interrupt INTM
+	ERTM;   // Enable Global realtime interrupt DBGM
 
 //	//Inicializacion de PID para control de tension
 //	pid_vout.Kp = _IQ(0.01);				// Con los valores de MatLab Kp = Pi*(I0/V0)
@@ -216,7 +228,7 @@ void main(void){
 
 	//Asignacion de la direccion de la rutina MainISR a la posicion de la tabla correspondiente a la interrupcion de PWM1
 	PieVectTable.EPWM1_INT = &MainISR;
-	//	PieVectTable.XNMI= &DesatISR; habilitar protección
+    //PieVectTable.XNMI= &DesatISR; habilitar protección
 	EDIS;
 
 	// Enable PIE group 3 interrupt 1 for EPWM1_INT
@@ -238,8 +250,9 @@ void main(void){
 	EINT;   // Enable Global interrupt INTM
 	ERTM;	// Enable Global realtime interrupt DBGM
 
-    V_D=0.5;
+    V_D=0.75;
     V_Q=0;
+    EPwm1TZIntCount = 0;
 	//LOOP INFINITO
 	for(;;){
 		//Titila led control card
@@ -265,6 +278,20 @@ interrupt void MainISR(void){
 //		ARRANQUE_CON_RED=1;
 
 	    Mediciones();
+//            VinversorW = ((AdcMirror.ADCRESULT12)*0.00024414-0.5)*2.0;  // Phase W tensión sobre capacitores de salida del inversor.
+//            VinversorV = ((AdcMirror.ADCRESULT14)*0.00024414-0.5)*2.0;  // Phase V tensión sobre capacitores de salida del inversor.
+//            VinversorU = ((AdcMirror.ADCRESULT15)*0.00024414-0.5)*2.0;  // Phase U tensión sobre capacitores de salida del inversor.
+//            IcargaW = ((AdcMirror.ADCRESULT5)*0.00024414-0.5)*2.0;      // Phase W corriente de carga.
+//            IcargaV = ((AdcMirror.ADCRESULT13)*0.00024414-0.5)*2.0;     // Phase V corriente de carga.
+//            IcargaU = ((AdcMirror.ADCRESULT11)*0.00024414-0.5)*2.0;     // Phase U corriente de carga.
+//            VgridW = ((AdcMirror.ADCRESULT0)*0.00024414-0.5)*2.0;       // Phase W tensión de red.
+//            VgridV = ((AdcMirror.ADCRESULT1)*0.00024414-0.5)*2.0;       // Phase V tensión de red.
+//            VgridU = ((AdcMirror.ADCRESULT2)*0.00024414-0.5)*2.0;       // Phase U tensión de red.
+//            IgridW = ((AdcMirror.ADCRESULT8)*0.00024414-0.5)*2.0;       // Phase W corriente de red.
+//            IgridV = ((AdcMirror.ADCRESULT9)*0.00024414-0.5)*2.0;       // Phase V corriente de red.
+//            IgridU = ((AdcMirror.ADCRESULT10)*0.00024414-0.5)*2.0;      // Phase U corriente de red.
+//            IBUS   = ((AdcMirror.ADCRESULT4)*0.00024414-0.5)*2.0;       // Corriente de BUS.
+//            VBUS   = (AdcMirror.ADCRESULT7)*0.00024414;     // Tensión de BUS (NO SE RESTA NI MULTIPLICA PORQUE ES CONTINUA).
     //Parametrizacion de los valores de la rampa de angulo
         rampa.Freq = _IQ(frecuencia);
 
@@ -361,37 +388,37 @@ interrupt void MainISR(void){
 
     //***************************************************************************
     //***************************************************************************
-	
+
     // ------------------------------------------------------------------------------
     //  Versiones filtradas de corrientes y tensiones
     // ------------------------------------------------------------------------------
 
-    Vq_inv_filtrada= 0.000999 * Vq_inv + 0.999001 * Vq_inv_filtrada;
-
-    Vd_inv_filtrada= 0.000999 * Vd_inv + 0.999001 * Vd_inv_filtrada;
-
-	Vq_grid_filtrada= 0.000999 * Vq_grid + 0.999001 * Vq_grid_filtrada;
-
-    Vd_grid_filtrada= 0.000999 * Vd_grid + 0.999001 * Vd_grid_filtrada;
-
-    Iq_grid_filtrada= 0.000999 * Iq_grid + 0.999001 * Iq_grid_filtrada;
-
-    Id_grid_filtrada= 0.000999 * Id_grid + 0.999001 * Id_grid_filtrada;
-
-    Iq_carga_filtrada= 0.000999 * Iq_carga + 0.999001 * Iq_carga_filtrada;
-
-    Id_carga_filtrada= 0.000999 * Id_carga + 0.999001 * Id_carga_filtrada;
-	
-	VBUS_filtrada= 0.000999 * VBUS + 0.999001 * VBUS_filtrada;
+//    Vq_inv_filtrada= 0.000999 * Vq_inv + 0.999001 * Vq_inv_filtrada;
+//
+//    Vd_inv_filtrada= 0.000999 * Vd_inv + 0.999001 * Vd_inv_filtrada;
+//
+//	Vq_grid_filtrada= 0.000999 * Vq_grid + 0.999001 * Vq_grid_filtrada;
+//
+//    Vd_grid_filtrada= 0.000999 * Vd_grid + 0.999001 * Vd_grid_filtrada;
+//
+//    Iq_grid_filtrada= 0.000999 * Iq_grid + 0.999001 * Iq_grid_filtrada;
+//
+//    Id_grid_filtrada= 0.000999 * Id_grid + 0.999001 * Id_grid_filtrada;
+//
+//    Iq_carga_filtrada= 0.000999 * Iq_carga + 0.999001 * Iq_carga_filtrada;
+//
+//    Id_carga_filtrada= 0.000999 * Id_carga + 0.999001 * Id_carga_filtrada;
+//
+//	VBUS_filtrada= 0.000999 * VBUS + 0.999001 * VBUS_filtrada;
 
     // ------------------------------------------------------------------------------
 	// Cálculo de TENSIÓN EFICAZ del inversor y de la red
     // ------------------------------------------------------------------------------
 	Veff_inv=_IQmag(Vq_inv_filtrada, Vd_inv_filtrada)*BASE_VOLT_ALTERNA*0.707106;	//Tension en P.U. por la base y sobre sqrt(2) para sacar la tensión eficaz
 	Veff_grid=_IQmag(Vq_grid_filtrada, Vd_grid_filtrada)*BASE_VOLT_ALTERNA*0.707106;	//Tension en P.U. por la base y sobre sqrt(2) para sacar la tensión eficaz
-	
+
 	//Veff_sp=Veff_grid; //Se asigna como setpoint de tension la tension eficaz de la linea (para pruebas)
-	
+
     // ------------------------------------------------------------------------------
 	// Cálculo de CORRIENTE EFICAZ de la carga y de la red
     // ------------------------------------------------------------------------------
@@ -401,7 +428,7 @@ interrupt void MainISR(void){
     // ------------------------------------------------------------------------------
 	// Cálculo de TENSIÓN DE BUS
     // ------------------------------------------------------------------------------
-	
+
     VBUS= VBUS_filtrada*BASE_VOLT_CONTINUA;
 
 
@@ -501,7 +528,7 @@ interrupt void MainISR(void){
 //	V_Q = pid_iq.Out + Id_grid_filtrada*Comp+Vq_grid_filtrada*rc_vd_arranque.SetpointValue;
 	//***************************************************************************
     //***************************************************************************
-	
+
     //***************************************************************************
     //OBTENSIÓN DE LA TRANSFORMACIÓN INVERSA A PARTIR DE V_D Y V_Q
     //***************************************************************************
@@ -595,7 +622,7 @@ interrupt void MainISR(void){
 						//buffer_Out[cuenta]=pid_vout.Fdb; // Veff salida
 						//buffer_error[cuenta]=pid_vout.Err; // error
 						//Isuma=Isuma+IBUS_ok;
-						cuenta=cuenta+1;
+						cuenta=cuenta++;
 					}else{
 						//Imedia=Isuma/cuenta;
 						//Isuma=0;
@@ -615,7 +642,7 @@ interrupt void MainISR(void){
     //IUpico= (AdcMirror.ADCRESULT11/102);
     //IVpico= (AdcMirror.ADCRESULT13/102);
     //IWpico= (AdcMirror.ADCRESULT5/102);
-	
+
 	// ------------------------------------------------------------------------------
     //  ESBOZO DE PROTECCION INSTANTANEA DE ID E IQ
 	//	Si alguna de las magnitudes instantaneas supera el limite de umbral se abren los igbt hasta que ingrese dentro de valores
@@ -659,7 +686,13 @@ interrupt void MainISR(void){
 
 
     if(STOP==1){ //Flag de parada.
-			TZ_Protection();
+        if(AcknowledgeTZ==1){
+            GpioDataRegs.GPADAT.bit.GPIO8 = 1;
+            TZ_Clear();
+            GpioDataRegs.GPBDAT.bit.GPIO34 = 1;
+            STOP = 0;
+            AcknowledgeTZ = 0;
+        }
     }
     /*
         //ABRE LA PRIMERA RAMA DE IGBTs
@@ -734,7 +767,7 @@ interrupt void MainISR(void){
             //from the action-qualifier are passed directly to the PWM-chopper submodule.
             EPwm3Regs.DBCTL.bit.OUT_MODE = 0;
     */
-            
+
         //}
 	//}
     //Limpiar flag de evento de interrupcion
@@ -746,7 +779,8 @@ interrupt void MainISR(void){
 
 interrupt void ProteccionExtCorriente(void)
 {
-	TZ_Protection();	
+	TZ_Protection();
+	STOP = 0;
 }
 
 //Proteccion por TRIPZONE
@@ -771,7 +805,19 @@ EALLOW;
 	EPwm1Regs.TZCLR.bit.OST = 1;
 	EPwm2Regs.TZCLR.bit.OST = 1;
 	EPwm3Regs.TZCLR.bit.OST = 1;
+    EPwm1Regs.TZCLR.bit.INT = 1;
+    EPwm2Regs.TZCLR.bit.INT = 1;
+    EPwm3Regs.TZCLR.bit.INT = 1;
 EDIS;
+}
+__interrupt void epwm1_tzint_isr(void)
+{
+   GpioDataRegs.GPBDAT.bit.GPIO34 = 0;
+   GpioDataRegs.GPADAT.bit.GPIO8 = 0;
+   EPwm1TZIntCount++;
+   STOP=1;
+   // Acknowledge this interrupt to receive more interrupts from group 2
+   PieCtrlRegs.PIEACK.all = PIEACK_GROUP2;
 }
 //===========================================================================
 // No more.

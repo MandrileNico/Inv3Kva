@@ -1,11 +1,11 @@
-#include <string.h>
 
-#include "DSP2833x_Device.h"                    // DSP2833x header file
-#include "DSP2833x_DefaultISR.h"                // Definiciones de ISR
+
+#include "DSP2833x_Device.h"   // DSP2833x header file
+//#include "DSP2833x_DefaultISR.h"                // Definiciones de ISR
 #include "Solar_IQ.h"
 
-#ifndef HEADERS_H_
-#define HEADERS_H_
+#ifndef MEDICIONES_H_
+#define MEDICIONES_H_
 
 extern void Mediciones();
 
@@ -24,4 +24,4 @@ extern _iq IgridW;    //Corriente de fase W de la red
 extern _iq IBUS;     //Corriente de BUS
 extern _iq VBUS;
 
-#endif /* HEADERS_H_ */
+#endif /* MEDICIONES_H_ */

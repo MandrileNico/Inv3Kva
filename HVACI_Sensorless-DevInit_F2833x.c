@@ -194,8 +194,8 @@ void DeviceInit(void)
        //  GPIO-08 (PIN28) - PIN FUNCTION = CLR FAULT
        	GpioCtrlRegs.GPAMUX1.bit.GPIO8 = 0;		// 0=GPIO,  1=EPWM5A,  2=CANTX-B,  3=ADCSOC-A
        	GpioCtrlRegs.GPADIR.bit.GPIO8 = 1;		// 1=OUTput,  0=INput
-       	GpioDataRegs.GPACLEAR.bit.GPIO8 = 1;	// uncomment if --> Set Low initially
-       //	GpioDataRegs.GPASET.bit.GPIO8 = 1;		// uncomment if --> Set High initially
+       	//GpioDataRegs.GPACLEAR.bit.GPIO8 = 1;	// uncomment if --> Set Low initially
+       	GpioDataRegs.GPASET.bit.GPIO8 = 1;		// uncomment if --> Set High initially
        //--------------------------------------------------------------------------------------
        //  GPIO-09 (PIN78) - PIN FUNCTION = --Spare--
        	GpioCtrlRegs.GPAMUX1.bit.GPIO9 = 0;		// 0=GPIO,  1=EPWM5B,  2=SCITX-B,  3=ECAP3
@@ -206,7 +206,7 @@ void DeviceInit(void)
        //  GPIO-10 (PIN29) - PIN FUNCTION = OCP
        	GpioCtrlRegs.GPAMUX1.bit.GPIO10 = 0;	// 0=GPIO,  1=EPWM6A,  2=CANRX-B,  3=ADCSOC-B
        	GpioCtrlRegs.GPADIR.bit.GPIO10 = 0;		// 1=OUTput,  0=INput
-       //	GpioDataRegs.GPACLEAR.bit.GPIO10 = 1;	// uncomment if --> Set Low initially
+       	GpioDataRegs.GPACLEAR.bit.GPIO10 = 1;	// uncomment if --> Set Low initially
        //	GpioDataRegs.GPASET.bit.GPIO10 = 1;		// uncomment if --> Set High initially
        //--------------------------------------------------------------------------------------
        //  GPIO-11 (PIN79) - PIN FUNCTION = --Spare--
@@ -216,10 +216,14 @@ void DeviceInit(void)
        //	GpioDataRegs.GPASET.bit.GPIO11 = 1;		// uncomment if --> Set High initially
        //--------------------------------------------------------------------------------------
        //  GPIO-12 (PIN33) - PIN FUNCTION = TZ-1
-       	GpioCtrlRegs.GPAMUX1.bit.GPIO12 = 0;	// 0=GPIO,  1=TZ1,  2=CANTX-B,  3=MDX-B
-       	GpioCtrlRegs.GPADIR.bit.GPIO12 = 0;		// 1=OUTput,  0=INput
-       //	GpioDataRegs.GPACLEAR.bit.GPIO12 = 1;	// uncomment if --> Set Low initially
-       //	GpioDataRegs.GPASET.bit.GPIO12 = 1;		// uncomment if --> Set High initially
+       //	GpioCtrlRegs.GPAMUX1.bit.GPIO12 = 0;	// 0=GPIO,  1=TZ1,  2=CANTX-B,  3=MDX-B
+       //	GpioCtrlRegs.GPADIR.bit.GPIO12 = 0;		// 1=OUTput,  0=INput
+       //Cambio de configuracion de gpio para usar tz1
+       GpioCtrlRegs.GPAPUD.bit.GPIO12 = 0;
+       GpioCtrlRegs.GPAQSEL1.bit.GPIO12 = 3;
+       GpioCtrlRegs.GPAMUX1.bit.GPIO12 = 1;
+       //GpioDataRegs.GPACLEAR.bit.GPIO12 = 1;	// uncomment if --> Set Low initially
+       //GpioDataRegs.GPASET.bit.GPIO12 = 1;		// uncomment if --> Set High initially
        //--------------------------------------------------------------------------------------
        //  GPIO-13 (PIN83) - PIN FUNCTION = --Spare--
        	GpioCtrlRegs.GPAMUX1.bit.GPIO13 = 0;	// 0=GPIO,  1=TZ2,  2=CANRX-B,  3=MDR-B
@@ -352,8 +356,8 @@ void DeviceInit(void)
        //  GPIO-34 (PIN46) - PIN FUNCTION = LED3 (for Release 1.1 and up F2833x controlCARDs)
        	GpioCtrlRegs.GPBMUX1.bit.GPIO34 = 0;	// 0=GPIO,  1=ECAP1,  2=Resv,  3=Resv
        	GpioCtrlRegs.GPBDIR.bit.GPIO34 = 1;		// 1=OUTput,  0=INput
-       	GpioDataRegs.GPBCLEAR.bit.GPIO34 = 1;	// uncomment if --> Set Low initially
-       //	GpioDataRegs.GPBSET.bit.GPIO34 = 1;		// uncomment if --> Set High initially
+       	//GpioDataRegs.GPBCLEAR.bit.GPIO34 = 1;	// uncomment if --> Set Low initially
+       	GpioDataRegs.GPBSET.bit.GPIO34 = 1;		// uncomment if --> Set High initially
        //--------------------------------------------------------------------------------------
        //--------------------------------------------------------------------------------------
        //  GPIO-35 - PIN FUNCTION = --Spare-- (SCI-TX on R1 F2833x controlCARD)
@@ -377,7 +381,7 @@ void DeviceInit(void)
        //  GPIO-39 - PIN FUNCTION = LED3 (for Release 1 F2833x controlCARDs)
        	GpioCtrlRegs.GPBMUX1.bit.GPIO39 = 0;	// 0=GPIO,  1=Resv,  2=XA16,  3=Resv
        	GpioCtrlRegs.GPBDIR.bit.GPIO39 = 1;		// 1=OUTput,  0=INput
-       //	GpioDataRegs.GPBCLEAR.bit.GPIO39 = 1;	// uncomment if --> Set Low initially
+       	GpioDataRegs.GPBCLEAR.bit.GPIO39 = 1;	// uncomment if --> Set Low initially
        //	GpioDataRegs.GPBSET.bit.GPIO39 = 1;		// uncomment if --> Set High initially
        //--------------------------------------------------------------------------------------
 

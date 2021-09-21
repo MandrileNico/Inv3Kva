@@ -1,11 +1,7 @@
 # FIXED
 
 Mediciones.obj: ../Mediciones.c
-Mediciones.obj: ../Headers.h
-Mediciones.obj: C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/string.h
-Mediciones.obj: C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/_ti_config.h
-Mediciones.obj: C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/linkage.h
-Mediciones.obj: C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/sys/cdefs.h
+Mediciones.obj: ../Mediciones.h
 Mediciones.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_Device.h
 Mediciones.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_Adc.h
 Mediciones.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_DevEmu.h
@@ -25,10 +21,11 @@ Mediciones.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/i
 Mediciones.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_SysCtrl.h
 Mediciones.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_XIntrupt.h
 Mediciones.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_Xintf.h
-Mediciones.obj: C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_DefaultISR.h
 Mediciones.obj: C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/Solar_IQ.h
 Mediciones.obj: C:/ti/controlSUITE/libs/math/IQmath/v160/include/IQmathLib.h
 Mediciones.obj: C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/limits.h
+Mediciones.obj: C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/_ti_config.h
+Mediciones.obj: C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/linkage.h
 Mediciones.obj: C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/ABC_DQ0_POS_IQ.h
 Mediciones.obj: C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/ABC_DQ0_NEG_IQ.h
 Mediciones.obj: C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/CLARKE_IQ.h
@@ -56,11 +53,7 @@ Mediciones.obj: C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/SPLL_3PH_
 Mediciones.obj: C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/NOTCH_FLTR_IQ.h
 
 ../Mediciones.c: 
-../Headers.h: 
-C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/string.h: 
-C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/_ti_config.h: 
-C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/linkage.h: 
-C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/sys/cdefs.h: 
+../Mediciones.h: 
 C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_Device.h: 
 C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_Adc.h: 
 C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_DevEmu.h: 
@@ -80,10 +73,11 @@ C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_
 C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_SysCtrl.h: 
 C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_XIntrupt.h: 
 C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/include/DSP2833x_Xintf.h: 
-C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/include/DSP2833x_DefaultISR.h: 
 C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/Solar_IQ.h: 
 C:/ti/controlSUITE/libs/math/IQmath/v160/include/IQmathLib.h: 
 C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/limits.h: 
+C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/_ti_config.h: 
+C:/ti/ccs1011/ccs/tools/compiler/ti-cgt-c2000_20.2.1.LTS/include/linkage.h: 
 C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/ABC_DQ0_POS_IQ.h: 
 C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/ABC_DQ0_NEG_IQ.h: 
 C:/ti/controlSUITE/libs/app_libs/solar/v1.2/IQ/include/CLARKE_IQ.h: 

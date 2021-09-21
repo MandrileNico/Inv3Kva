@@ -21,6 +21,7 @@ C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/source/DSP2833x_G
 C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/source/DSP2833x_PieCtrl.c \
 ../HVACI_Sensorless-DevInit_F2833x.c \
 ../Mediciones.c \
+../TripZoneEnable.c \
 ../main_control_corriente.c 
 
 C_DEPS += \
@@ -29,6 +30,7 @@ C_DEPS += \
 ./DSP2833x_PieCtrl.d \
 ./HVACI_Sensorless-DevInit_F2833x.d \
 ./Mediciones.d \
+./TripZoneEnable.d \
 ./main_control_corriente.d 
 
 OBJS += \
@@ -41,6 +43,7 @@ OBJS += \
 ./FIR_f32.obj \
 ./HVACI_Sensorless-DevInit_F2833x.obj \
 ./Mediciones.obj \
+./TripZoneEnable.obj \
 ./main_control_corriente.obj 
 
 ASM_DEPS += \
@@ -59,6 +62,7 @@ OBJS__QUOTED += \
 "FIR_f32.obj" \
 "HVACI_Sensorless-DevInit_F2833x.obj" \
 "Mediciones.obj" \
+"TripZoneEnable.obj" \
 "main_control_corriente.obj" 
 
 C_DEPS__QUOTED += \
@@ -67,6 +71,7 @@ C_DEPS__QUOTED += \
 "DSP2833x_PieCtrl.d" \
 "HVACI_Sensorless-DevInit_F2833x.d" \
 "Mediciones.d" \
+"TripZoneEnable.d" \
 "main_control_corriente.d" 
 
 ASM_DEPS__QUOTED += \
@@ -87,6 +92,7 @@ C_SRCS__QUOTED += \
 "C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_common/source/DSP2833x_PieCtrl.c" \
 "../HVACI_Sensorless-DevInit_F2833x.c" \
 "../Mediciones.c" \
+"../TripZoneEnable.c" \
 "../main_control_corriente.c" 
 
 

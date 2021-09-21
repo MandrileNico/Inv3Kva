@@ -19,6 +19,7 @@ ORDERED_OBJS += \
 "./FIR_f32.obj" \
 "./HVACI_Sensorless-DevInit_F2833x.obj" \
 "./Mediciones.obj" \
+"./TripZoneEnable.obj" \
 "./main_control_corriente.obj" \
 "../28335_RAM_lnk.cmd" \
 "C:/ti/controlSUITE/device_support/f2833x/v140/DSP2833x_headers/cmd/DSP2833x_Headers_nonBIOS.cmd" \
@@ -165,8 +166,8 @@ Pruebas_inversorLS2.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "DSP2833x_ADC_cal.obj" "DSP2833x_CodeStartBranch.obj" "DSP2833x_DefaultIsr.obj" "DSP2833x_GlobalVariableDefs.obj" "DSP2833x_PieCtrl.obj" "DSP2833x_usDelay.obj" "FIR_f32.obj" "HVACI_Sensorless-DevInit_F2833x.obj" "Mediciones.obj" "main_control_corriente.obj" 
-	-$(RM) "DSP2833x_DefaultIsr.d" "DSP2833x_GlobalVariableDefs.d" "DSP2833x_PieCtrl.d" "HVACI_Sensorless-DevInit_F2833x.d" "Mediciones.d" "main_control_corriente.d" 
+	-$(RM) "DSP2833x_ADC_cal.obj" "DSP2833x_CodeStartBranch.obj" "DSP2833x_DefaultIsr.obj" "DSP2833x_GlobalVariableDefs.obj" "DSP2833x_PieCtrl.obj" "DSP2833x_usDelay.obj" "FIR_f32.obj" "HVACI_Sensorless-DevInit_F2833x.obj" "Mediciones.obj" "TripZoneEnable.obj" "main_control_corriente.obj" 
+	-$(RM) "DSP2833x_DefaultIsr.d" "DSP2833x_GlobalVariableDefs.d" "DSP2833x_PieCtrl.d" "HVACI_Sensorless-DevInit_F2833x.d" "Mediciones.d" "TripZoneEnable.d" "main_control_corriente.d" 
 	-$(RM) "DSP2833x_ADC_cal.d" "DSP2833x_CodeStartBranch.d" "DSP2833x_usDelay.d" "FIR_f32.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
